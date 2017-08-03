@@ -1,19 +1,16 @@
 <?php
-/*
-  Receive AuthResponseToken from client, that it rececieved from Google
-  Token is async encrypted with data
-*/
-//Get Google API Client
-require("./../../exAPIS/GAPI/vendor/autoload.php");
-$client = new Google_Client();
-$client->setAuthConfig("./../../exAPIS/GAPI/client_secret_714276037632-o78r4g32of31cbpaa59jd279vg5sbrqm.apps.googleusercontent.com.json");
+  //LoginHandler Class Driver
+  //Receives AJAX Requests from user and passes to LoginHandler for Google Login
+  /****************************************************/
+  if(!$token = $_POST["OID"]) //Don't do anything without token
+    exit("Empty Request.");
 
-$user_idToken = $_POST["OID"];//encrypted auth string from user
-$payload = $client->verifyIdToken($user_idToken);
-if ($payload) {
-  //$userid = $payload['sub']
-  exit(json_encode($payload));
-} else {
-  exit(json_encode(array("RESP"=>"Invalid ID Token")));
-}
-?>
+
+    require("./LoginHandler.php");
+    $LoginHandler = new LoginHandler();
+    $LoginHandler->setUserGAPIToken($token);
+
+    if(!$LoginHandler->procIDToken()){
+      exit($LoginHandler->getErrorMessage());
+    }
+ ?>
