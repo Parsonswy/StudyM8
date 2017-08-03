@@ -9,10 +9,7 @@ $client = new Google_Client();
 $client->setAuthConfig("./../../exAPIS/GAPI/client_secret_714276037632-o78r4g32of31cbpaa59jd279vg5sbrqm.apps.googleusercontent.com.json");
 
 $user_idToken = $_POST["OID"];//encrypted auth string from user
-echo $user_idToken;
-echo var_dump($_POST);
-$client->setAccessToken($user_idToken);
-$payload = $client->verifyIdToken();
+$payload = $client->verifyIdToken($user_idToken);
 if ($payload) {
   //$userid = $payload['sub']
   exit(json_encode($payload));

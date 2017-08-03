@@ -4,7 +4,7 @@
 * Actual file is directly uploaded to Google
 */
   class CreateStudyResource{
-      private $_tempLoc
+      private $
       //Requires temporary location of uploaded resource
       //
       //
