@@ -13,4 +13,24 @@
     if(!$LoginHandler->procIDToken()){
       exit($LoginHandler->getErrorMessage());
     }
+
+    $accountStatus = $LoginHandler->accountExists();
+    if(!$accountStatus)
+      exit($LoginHandler->getErrorMessage());
+
+    //Create
+    if($accountStatus == 1){
+      if(!$LoginHandler->createAccount())
+        exit($LoginHandler->getErrorMessage());
+
+      $accountStatus = 2;
+      echo "[DEBUG]Account Created";
+    }
+
+    //Login
+    if($accountStatus == 2){
+      if(!$LoginHandler->loginToAccount())
+        exit($LoginHandler->getErrorMessage());
+    }
+    echo "[DEBUG]Login Sucesful!";
  ?>
