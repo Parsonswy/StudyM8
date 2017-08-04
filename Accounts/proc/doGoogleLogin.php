@@ -24,7 +24,7 @@
         exit($LoginHandler->getErrorMessage());
 
       $accountStatus = 2;
-      echo "[DEBUG]Account Created";
+      //echo "[DEBUG]Account Created";
     }
 
     //Login
@@ -32,5 +32,5 @@
       if(!$LoginHandler->loginToAccount())
         exit($LoginHandler->getErrorMessage());
     }
-    echo "[DEBUG]Login Sucesful!";
+    //echo "[DEBUG]Login Sucesful!";
  ?>

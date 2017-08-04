@@ -25,6 +25,7 @@ function reportSignonToServer(token){
      console.log(JSON.parse(this.responseText));
    }
  };
+ 
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("OID=" + token);
 }
