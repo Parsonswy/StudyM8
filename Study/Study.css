@@ -110,7 +110,7 @@ div.SM8_UploadItems_Form{
 }
 
 #SM8_UploadItems_Form_FilePool{
-  width:350px;
+  width:270px;
   height:60px;
 
   margin:5px auto 5px auto;
@@ -119,6 +119,27 @@ div.SM8_UploadItems_Form{
   text-align: center;
   color: #DDD;
   font-size:24px;
+}
+
+div.SM8_UploadItems_Form_Submit{
+  width: 60px;
+  height:40px;
+
+  position: relative;
+  top: -60px;
+  float:right;
+
+  border-radius: 4px;
+  background-color:#339966;
+
+  text-align: center;
+  color:white;
+  font-size:16px;
+  font-weight: bolder;
+}
+
+div.SM8_UploadItems_Form_Submit:hover{
+  cursor:pointer;
 }
 
 div.SM8_UploadItems_Form_FilePool_Upload{
