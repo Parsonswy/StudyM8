@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./Study.css"/>
+  </head>
+  <body onload="calculateNormals();" onresize="calculateNormals();" onclick="toggleFields();">
+    <div class="SM8_Browser_Wrap" id="SM8_Browser_Wrap">
+      <div class="SM8_Header">
+        Header
+      </div>
+
+      <div class="SM8_Browser">
+        <div class="SM8_FileListing">
+          File 1
+        </div>
+        <div class="SM8_FileListing">
+          File 2
+        </div>
+        <div class="SM8_FileListing">
+          File 3
+        </div>
+      </div>
+
+      <div id="SM8_AddItem" class="SM8_AddItem" onclick="SM8_AddItemInflate();">
+        +
+      </div>
+
+      <div id="SM8_AddItem_Options" class="SM8_AddItem_Options">
+        <div id="SM8_AddItem_Option_Upload" class="SM8_AddItem_Option" onclick="SM8_UploadItemsInfalte(); SM8_AddItemPop();">
+          Upload Files
+        </div>
+      </div>
+
+      <div class="SM8_UploadItems_Wrap" id="SM8_UploadItems_Wrap">
+        <div class="SM8_UploadItems_Opaque" onclick="SM8_UploadItemsPop();"></div>
+        <div class="SM8_UploadItems_Form">
+          <div id="SM8_UploadItems_Form_FilePool"><!--File Upload / Attatch Button-->
+            <input class="SM8_UploadItems_Form_FilePool_Upload" name="SM8_UploadItems_Form_FilePool_Upload" type="file" accept="audio/*, video/*, image/*, pdf" onchange="fileDeck_AddFile(this);"/>
+
+          </div>
+          <div id="SM8_UploadItems_Form_FileDeck"><!--Wrapper for list of files to be uploaded-->
+            <!--Populated with drop down divs by JS as files are added to the pool-->
+          </div>
+        </div>
+      </div>
+
+      <div class="SM8_Homerow">
+        home row
+      </div>
+    </div>
+    <script type="text/javascript" src="./Study.js"></script>
+    <script type="text/javascript" src="./FileDeck.js"></script>
+  </body>
+</html>
