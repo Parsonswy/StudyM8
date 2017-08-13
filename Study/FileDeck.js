@@ -1,5 +1,12 @@
 var FilePool = document.getElementById("SM8_UploadItems_Form_FilePool");//Upload Button Wrapper
 var FileDeck = document.getElementById("SM8_UploadItems_Form_FileDeck");//Selected File List
+
+var Form = document.getElementById("SM8_UploadItems_Form_FileDeck_Form");
+Form.addEventListener("submit", function(ev){
+  SM8_ProcessFilePool();
+  ev.preventDefault();//Prevent form submission
+});
+
 var FileDeck_configured = false;
 var FileDeck_FilesOnDeck = 0;
 /*Get configuration information from server on first load*/
@@ -11,7 +18,7 @@ function fileDeck__construct(){
 }
 
 function fileDeck__construct_GetSubjectData(){
-  xmlHttp = new XMLHttpRequest();
+  var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("./GetStudyData.php", "POST");
   xmlHttp.onreadystatechange = function(){
     if(xmlHttp.status == 200 && xmlHttp.readystate == 4){
@@ -74,3 +81,20 @@ function fileDeck_ConfigureBoard(filename, docname,){
 /***********************************************************
 * Functions hading user submission of form
 ************************************************************/
+//Deck is pre upload when stuff exists in div
+//Pool is file grouping / post submission
+function SM8_ProcessFilePool(){
+  var formData = new FormData(Form);//Auto creates obj with data already in fields
+
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open("POST","./proc/CreateStudyResource.php",true);
+  xmlHttp.onreadystatechange = function(){
+    if(xmlHttp.status == 200 && xmlHttp.readystate == 4){
+      console.log("[DEBUG]File Upload Sucesful - Reponse data: " + xmlHttp.reponseText);
+    }else{
+      console.log("[DEBUG]File Upload Failed - Reponse data: " + xmlHttp.reponseText);
+    }
+  }
+
+  xmlHttp.send(formData);//Send auto filled form data object
+}
