@@ -42,28 +42,28 @@ function fileDeck_ConfigureBoard(){
   var form = '\
   <div class="SM8_UploadItems_Form_FileDeck_Board">\
     <div class="SM8_UploadItems_Form_FileDeck_BoardHeader" onclick="SM8_UploadItems_Form_FileDeck_BoardInflate(this);">\
-      <input class="SM8_UploadItems_Form_FilePool_Upload" name="SM8_UploadItems_Form_FilePool_Upload" type="file" accept="audio/*, video/*, image/*, pdf"/>\
+      <input class="SM8_UploadItems_Form_FilePool_Upload" name="SM8_UploadItems_Form_FilePool_Upload_' + FileDeck_FilesOnDeck + '" type="file" accept="audio/*, video/*, image/*, pdf"/>\
       <span style="float:right;"> < </span>\
     </div>\
     <div class="SM8_UploadItems_Form_FileDeck_BoardContent">\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Entry Name: <input type="text" name="1_FDeck_EntryName" id="1_FDeck_EntryName" value="" placeholder="Name for file entry in system"/>\
+        Entry Name: <input type="text" name="' + FileDeck_FilesOnDeck + '_FDeck_EntryName" id="' + FileDeck_FilesOnDeck + '_FDeck_EntryName" value="" placeholder="Name for file entry in system"/>\
       </div>\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Section: <select name="1_FDeck_Section">\
+        Section: <select name="' + FileDeck_FilesOnDeck + '_FDeck_Section">\
                   <option value="Class_1">Math</option>\
                   <option value="Class_1">English</option>\
                 <select>\
-        Unit: <select name="1_FDeck_Unit">\
+        Unit: <select name="' + FileDeck_FilesOnDeck + '_FDeck_Unit">\
                 <option value="Class_1_Unit_1">Unit 1</section>\
                 <option value="Class_1_Unit_2">Unit 2</section>\
               </select>\
       </div>\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Tags: <input type="text" name="1_Tags" value=""/ placeholder="Seperate with commas">\
+        Tags: <input type="text" name="' + FileDeck_FilesOnDeck + '_Tags" value=""/ placeholder="Seperate with commas">\
       </div>\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Descritpion: <textarea style="resize:none;" rows="5" cols="45" name="1_Description" value=""/ placeholder="Descrption / Summary / and or notes."></textarea>\
+        Descritpion: <textarea style="resize:none;" rows="5" cols="45" name="' + FileDeck_FilesOnDeck + '_Description" value=""/ placeholder="Descrption / Summary / and or notes."></textarea>\
       </div>\
     </div>\
   </div>';
