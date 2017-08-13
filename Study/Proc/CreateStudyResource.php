@@ -4,7 +4,7 @@
 * Actual file is directly uploaded to Google
 */
   class CreateStudyResource{
-      private $
+      //private $
       //Requires temporary location of uploaded resource
       //
       //
@@ -15,5 +15,7 @@
 
   echo "<pre>";
   var_dump($_POST);
+  echo "---";
+  var_dump($_FILES);
   echo "</pre>";
  ?>

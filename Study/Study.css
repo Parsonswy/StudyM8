@@ -5,7 +5,7 @@ body{
 div.SM8_Browser_Wrap{
   display:flex;
   display: -webkit-flex;
-  flex-direction: column;.
+  flex-direction: column;
 
   overflow-x:hidden;
   overflow-y:hidden;
@@ -42,9 +42,6 @@ div.SM8_AddItem{
   text-align: center;
   font-size:44px;
   color:white;
-}
-
-div.SM8_AddItem:hover{
   cursor:pointer;
 }
 
@@ -67,7 +64,7 @@ div.SM8_AddItem_Options{
 }
 
 div.SM8_AddItem_Option{
-  margin-top 2px;
+  margin-top: 2px;
 
   border-bottom: 1px solid #EEE;
 
@@ -78,80 +75,46 @@ div.SM8_AddItem_Option{
 
 div.SM8_UploadItems_Wrap{
   position: fixed;
+  display:flex;
+  display:-webkit-flex;
+
+  justify-content: space-around;
   z-index:11;
 
-  display:block;/**********************************************/
-
 }
 
-div.SM8_UploadItems_Opaque{
-  min-width:100vh;
-  min-height:100vh;
-
-  background-color: rgba(0,0,0,0.5);
+#SM8_UploadItems_Form_FileDeck_Form{/*literal Form*/
+  z-index:13;
 }
 
-div.SM8_UploadItems_Form{
+div.SM8_UploadItems_Form{/*Wrapper for area with divs with <inputs>*/
   width:400px;
   height:500px;
-  z-index:12;
-
-  position: relative;
-  top: -100vh;;
+  z-index:13;
 
   margin:60px auto auto auto;
   border-radius: 12px;
 
   overflow-x hidden;
-  overflow-y: auto;
+
+  display:flex;
+  display:-webkit-flex;
+  justify-content:center;
 
   opacity: 1;
   background-color:rgba(255,255,255,1);
 }
 
-#SM8_UploadItems_Form_FilePool{
-  width:270px;
-  height:60px;
-
-  margin:5px auto 5px auto;
-  border: 2px dashed #EEE;
-
-  text-align: center;
-  color: #DDD;
-  font-size:24px;
-}
-
-div.SM8_UploadItems_Form_Submit{
-  width: 60px;
-  height:40px;
-
-  position: relative;
-  top: -60px;
-  float:right;
-
-  border-radius: 4px;
-  background-color:#339966;
-
-  text-align: center;
-  color:white;
-  font-size:16px;
-  font-weight: bolder;
-}
-
-div.SM8_UploadItems_Form_Submit:hover{
-  cursor:pointer;
-}
-
-div.SM8_UploadItems_Form_FilePool_Upload{
-  width:inherit;
-  height:inherit;
-  border:none;
+#SM8_UploadItems_Form_FileDeck{
+	height:465px;
+	overflow-y: auto;
 }
 
 div.SM8_UploadItems_Form_FileDeck_Board{
   width: 350px;
-  height: 20px;
+  height: 26px;
 
+  margin-top:4px;
   border: 1px solid #EEE;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -170,12 +133,62 @@ div.SM8_UploadItems_Form_FileDeck_BoardContentItem{
   margin-top:6px;
 }
 
+div.SM8_UploadItems_ControlRow{
+	width:400px;
+	height:35px;
+	position:relative;
+	top:-35px;
+}
+
+#SM8_UploadItems_ControlRow_AddFile{
+	height:30px;
+	width:199px;
+	display:inline;
+	float:left;
+	padding-top:5px;
+	text-align:center;
+	background-color:#339966;
+	color:white;
+	cursor:pointer;
+}
+
+#SM8_UploadItems_ControlRow_SubmitForm{
+	height:35px;/*Value differs from AddFile to compensate for padding on <input>*/
+	width:199px;
+	display:inline;
+	float:right;
+	text-align:center;
+	background-color:#339966;
+	cursor:pointer;
+}
+
+#SM8_UploadItems_ControlRow_SubmitForm input{
+	width:199px;
+	height:30px;
+	background:none;
+	border:none;
+	padding-top:5px;
+	color:white;
+	font-size:inherit;
+	font-family:inherit;
+}
+
 div.SM8_Homerow{
   height:55px;
   width:100%;
-  align-self: flex-end;
+  -webkit-align-self: flex-end;
 
   background-color: black;
 
   color:white;
+}
+
+div.SM8_UploadItems_Opaque{
+  position:fixed;
+  top:0px;
+  left:0px;
+  min-width:101vh;
+  min-height:100vh;
+  background-color: rgba(0,0,0,0.5);
+  z-index:1;
 }

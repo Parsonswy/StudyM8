@@ -36,22 +36,22 @@
       <!--File Upload Popup Form-->
       <div class="SM8_UploadItems_Wrap" id="SM8_UploadItems_Wrap">
       <form id="SM8_UploadItems_Form_FileDeck_Form" enctype="multipart/form-data" method="post" name="FileDeck_Form">
-        <div class="SM8_UploadItems_Opaque" onclick="SM8_UploadItemsPop();"></div><!--background-->
         <div class="SM8_UploadItems_Form">
-          <div id="SM8_UploadItems_Form_FilePool"><!--File Upload / Attatch Button-->
-            <input class="SM8_UploadItems_Form_FilePool_Upload" name="SM8_UploadItems_Form_FilePool_Upload" type="file" accept="audio/*, video/*, image/*, pdf" onchange="fileDeck_AddFile(this);"/>
-
-          </div>
-          <input type="submit" name="UploadFiles" value="Submit" class="SM8_UploadItems_Form_Submit" onclick="//TODO">
-            Submit
-          </div>
-          <div id="SM8_UploadItems_Form_FileDeck"><!--Wrapper for list of files to be uploaded-->
-
+          <div id="SM8_UploadItems_Form_FileDeck">
               <!--Populated with drop down divs by JS as files are added to the pool-->
-
           </div>
-        </form>
         </div><!--File Upload Wrapper-->
+		<div class="SM8_UploadItems_ControlRow">
+			<div id="SM8_UploadItems_ControlRow_AddFile" onclick="fileDeck_AddFile();">
+				Add New File
+			</div>
+			<div id="SM8_UploadItems_ControlRow_SubmitForm">
+				<input type="submit" value="Submit Files"/>
+			</div>
+		</div>
+		</form><!--TODO:Position properly and fix <close> order-->
+		<div class="SM8_UploadItems_Opaque" onclick="SM8_UploadItemsPop();"></div><!--background-->
+		</div><!--ItemUpload Form Wrapper-->
       </div><!-- Main Browswer Window Wrapper-->
 
       <div class="SM8_Homerow">

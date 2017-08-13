@@ -31,30 +31,23 @@ function fileDeck__construct_GetSubjectData(){
 * Post initialization functions hadling user interaction with form
 ************************************************************/
 //Hide upload btn, add to file list, create new upload btn
-function fileDeck_AddFile(upf){
-  var form = fileDeck_ConfigureBoard(upf.value, upf.value);
-    console.log("[B1]");
-  upf.style.display="none";
-    console.log("[B2]");
+function fileDeck_AddFile(){
+  var form = fileDeck_ConfigureBoard();
   FileDeck.innerHTML += form;
-    console.log("[B3]");
   FileDeck_FilesOnDeck++;
-    console.log("[B4]");
-  FilePool.innerHTML += '<input class="SM8_UploadItems_Form_FilePool_Upload" name="FilePool_Item' + FileDeck_FilesOnDeck + '" type="file" accept="audio/*, video/*, image/*, pdf" onchange="fileDeck_AddFile(this);"/>';
-    console.log("[B5]");
 }
 
 //TODO: File Name overflow pushes collapse arrow off screen
-function fileDeck_ConfigureBoard(filename, docname,){
+function fileDeck_ConfigureBoard(){
   var form = '\
   <div class="SM8_UploadItems_Form_FileDeck_Board">\
     <div class="SM8_UploadItems_Form_FileDeck_BoardHeader" onclick="SM8_UploadItems_Form_FileDeck_BoardInflate(this);">\
-      ' + filename + '\
+      <input class="SM8_UploadItems_Form_FilePool_Upload" name="SM8_UploadItems_Form_FilePool_Upload" type="file" accept="audio/*, video/*, image/*, pdf"/>\
       <span style="float:right;"> < </span>\
     </div>\
     <div class="SM8_UploadItems_Form_FileDeck_BoardContent">\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Entry Name: <input type="text" name="1_FDeck_EntryName" value="' + docname + '" placeholder="Name for file entry in system"/>\
+        Entry Name: <input type="text" name="1_FDeck_EntryName" id="1_FDeck_EntryName" value="" placeholder="Name for file entry in system"/>\
       </div>\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
         Section: <select name="1_FDeck_Section">\

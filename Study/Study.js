@@ -11,7 +11,7 @@ function calculateNormals(){
   SM8_UploadItems_Wrap = document.getElementById("SM8_UploadItems_Wrap");
 
   //Page Wrapper
-  SM8_Browser_Wrap.style.height = (window.innerHeight) + "px";
+  SM8_Browser_Wrap.style.height = (window.innerHeight - 55) + "px";
   SM8_Browser_Wrap.style.width = (window.innerWidth) + "px";
 
   //Z-seperator / popup wrapper / obscure
@@ -44,7 +44,7 @@ function SM8_AddItemPop(){
 
 //Toggle Upload window prompt
 function SM8_UploadItemsInfalte(){
-  SM8_UploadItems_Wrap.style.display = "block";
+  SM8_UploadItems_Wrap.style.display = "flex";
 }
 function SM8_UploadItemsPop(){
   SM8_UploadItems_Wrap.style.display = "none";
