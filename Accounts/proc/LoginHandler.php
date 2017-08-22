@@ -91,6 +91,7 @@ class LoginHandler{
     //
     //Check if account exists under GSubject ID
     //Used to determine account creation or login
+    //1: New User, 2: Returning user
     public function accountExists(){
       if(!$this->initDataSQL())
         return false;
@@ -107,7 +108,7 @@ class LoginHandler{
     public function createAccount(){
       $name = $this->_Mysqli->real_escape_string($this->_GUserData->name);
       $email = $this->_Mysqli->real_escape_string($this->_GUserData->email);
-      $query = $this->_Mysqli->query("INSERT INTO `M8_Users` VALUES(NULL,'$this->_subject','$name','$email','','')");
+      $query = $this->_Mysqli->query("INSERT INTO `M8_Users` VALUES(NULL,'$this->_subject','$name','$email','','','','" . time() . "')");
       if(!$this->_Mysqli->affected_rows){
         $this->_errorMessage = "A database error occured while attempting to create your account.";
         return false;
@@ -120,21 +121,28 @@ class LoginHandler{
     //Get data from servers
     //Set sessions / cookies
     public function loginToAccount(){
-      $query = $this->_Mysqli->query("SELECT `sm8ID`,`name`,`email` FROM `M8_Users` WHERE `subject`=$this->_subject");
+      $query = $this->_Mysqli->query("SELECT `sm8ID`,`name`,`email`,`gAPI_accessToken`,`sm8GFolder`,`lastLogin` FROM `M8_Users` WHERE `subject`=$this->_subject");
       if($query->num_rows != 1){
         $this->_errorMessage = "Error contacting logon server.";
         return false;
       }
 
       $rows = $query->fetch_assoc();
-      $sm8ID = $rows["sm8ID"];
-      $name = $rows["name"];
-      $email = $rows["email"];
-      $this->setSessionData($sm8ID, $name, $email);
+      session_start();
+      $_SESSION["SM8ID"] = $rows["sm8ID"];
+      $_SESSION["SM8NAME"] = $rows["name"];
+      $_SESSION["SM8Email"] = $rows["email"];
+      $_SESSION["gAPI_Token"] = $rows["gAPI_accessToken"];
+      $_SESSION["sm8GFolder"] = $rows["sm8GFolder"];
+      $_SESSION["sm8FATDB"] = $rows["sm8ID"] . "_SM8_FAT";
+
+      $SM8_Token = md5($rows["sm8ID"] . $rows["lastLogin"] . $_SERVER["HTTP_CF_CONNECTING_IP"]);
 
       //30 day expire, https, http header access only
       setcookie("SM8SUB",$this->_GUserData->sub,(time() + 60 * 60 * 24 * 30), "/", "studym8.org", true, true);
-      $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='" . session_ID() . "' WHERE `subject`='$this->_subject'");
+      setcookie("SM8TK",$SM8_Token,(time() + 60 * 60 * 24 * 30), "/", "studym8.org", true, true);
+
+      $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='" . session_ID() . "', `lastLogin`='" . time() . "' WHERE `subject`='$this->_subject'");
       echo $this->_Mysqli->error . "</br>";
 	  if(!$this->_Mysqli->affected_rows){
         $this->sessionDestroy();
@@ -150,16 +158,6 @@ class LoginHandler{
       session_destroy();
       setcookie("SM8SUB",null,time()-3600,"","studym8.org",true,true);
       $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='' WHERE `subject`=$this->_subject");
-    }
-
-    //
-    //Set session variables
-    //
-    private function setSessionData($sm8ID,$name,$email){
-      session_start();
-      $_SESSION["SM8ID"] = $sm8ID;
-      $_SESSION["SM8NAME"] = $name;
-      $_SESSION["SM8Email"] = $email;
     }
 
     //
@@ -179,28 +177,6 @@ class LoginHandler{
 * Outside noraml class stack flow
 *
 *************************************************************/
-
-    //(May Run Independently of regular class flow)
-    //Check sessionID exists for specified user
-    //Fills out session variables
-    public function sessionExists(){
-      if(!session_id())
-        return false;
-
-      if(!$subject = $_COOKIE["SM8SUB"])
-        return false;
-
-      if(!$this->_Mysqli instanceof mysqli)
-        $this->initDataSQL();
-
-      $subject = $this->_Mysqli->real_escape_string($subject);
-      $query = $this->_Mysqli->query("SELECT `sessionID` FROM `M8_Users` WHERE `subject`=$subject AND `sessionID`= " . session_ID());
-      if($query->num_rows != 1){
-        $this->sessionDestroy();
-        return false;
-      }
-      return true;
-    }
 
 }
 ?>

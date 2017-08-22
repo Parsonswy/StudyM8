@@ -23,7 +23,9 @@
       if(!$LoginHandler->createAccount())
         exit($LoginHandler->getErrorMessage());
 
-      $accountStatus = 2;
+      //Redirect to account settings page for first time setup
+      header("Location: https://studym8.org/accounts/accountSettings.php?config=init");
+      $accountStatus = 2; //Allow to continue and login below
       //echo "[DEBUG]Account Created";
     }
 
