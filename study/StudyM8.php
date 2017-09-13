@@ -1,3 +1,6 @@
+<?php
+
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -58,7 +61,7 @@
         home row
       </div>
     </div>
-    <script type="text/javascript" src="./Study.js"></script>
-    <script type="text/javascript" src="./FileDeck.js"></script>
+    <script type="text/javascript" src="./UserClinet/StudyM8_Client.js"></script>
+    <script type="text/javascript" src="./UserClient/StudyM8_Visuals.js"></script>
   </body>
 </html>

@@ -79,7 +79,7 @@ function fileDeck_ConfigureBoard(){
 function SM8_ProcessFilePool(){
   var formData = new FormData(Form);//Auto creates obj with data already in fields
   formData.append("action","create");
-  
+
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("POST","./proc/CreateStudyResource.php",true);
   xmlHttp.onreadystatechange = function(){
