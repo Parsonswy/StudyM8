@@ -39,6 +39,7 @@ class AccountSetup{
     $this->_Google_Client->setIncludeGrantedScopes(true);
     $this->_Google_Client->setAccessType("offline");
     $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
+	$this->_Google_Client->setRedirectUri("https://studym8.org/accounts/settings/oAuthCallback.php");
   }
 
   private function setGoogleClientAPIToken($token){
@@ -59,10 +60,9 @@ class AccountSetup{
     $this->initGoogleClient();
 
     //Config client to request access
-    $this->_Google_Client->setRedirectUri("https://studym8.org/accounts/settings/oAuthCallback.php");
     $authUrl = $this->_Google_Client->createAuthUrl();
 
-    $_SESSION["oAuth_Action"] = "GDrive_API_Setup"
+    $_SESSION["oAuth_Action"] = "GDrive_API_Setup";
     header("Location: " . $authUrl);
     exit();
   }
@@ -75,9 +75,9 @@ class AccountSetup{
     if(!$this->initMysql(1))//SM8 User data db link)
       return false;
 
-    //$accessToken = $this->_Google_Client->fetchAccessTokenWithAuthCode($code);
-    $this->_Google_Client->authenticate($code)
-    $accessToken = $this->_Google_Client->getAccessToken();
+    $resp = $this->_Google_Client->fetchAccessTokenWithAuthCode($code);
+	$accessToken = $resp["access_token"];
+	$this->_Google_Client->setAccessToken($accessToken);
 
     $this->_subjectID = $this->_Mysqli->real_escape_string($_COOKIE["SM8SUB"]);
     $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `gAPI_accessToken`='$accessToken' WHERE `subject`='$this->_subjectID'");
@@ -87,6 +87,8 @@ class AccountSetup{
 		$this->setErrorMessage("{DB}" . $this->_Mysqli->error . " - " . $accessToken);
 		return false;
 	}
+
+	$this->initDriveClient();
 
     if(!$this->setupGDrive())
       return false;
@@ -101,15 +103,15 @@ class AccountSetup{
   //First time drive setup
   //
   private function setupGDrive(){
-    $fData = new Google_Service_Drive_DriveFile(array("title" => "StudyM8 Storage","mimeType"=>"application/vnd.google-apps.folder"));
-    $file = $this->_Google_Drive_Client->files->insert($fData, array("fields"=>"id"));
+    $fData = new Google_Service_Drive_DriveFile(array("name" => "StudyM8 Storage","mimeType"=>"application/vnd.google-apps.folder"));
+    $file = $this->_Google_Drive_Client->files->create($fData, array("fields"=>"id"));
 
-    $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `sm8GFolder`=$file->id WHERE `subject`=$this->_subjectID");
+    $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `sm8GFolder`='$file->id' WHERE `subject`='$this->_subjectID'");
     $this->_gFolderID = $file->id;
 
     //If M8 DB not responsive, delete folder and abort
     if(!$this->_Mysqli->affected_rows){
-      $this->_Google_Drive_Client->files->delete($file->id);
+      //$this->_Google_Drive_Client->files->delete($file->id);
       $this->setErrorMessage("SM8 Database Error");
       return false;
     }
@@ -121,17 +123,28 @@ class AccountSetup{
   // Create users data table if doesn't already exist
   //
   private function setupSM8Db(){
-    $query = $this->_Mysqli->query("SHOW TABLES LIKE " . $Subject . "_SM8_FAT");
+    $query = $this->_Mysqli->query("SHOW TABLES LIKE '" . $this->_subjectID . "_SM8_FAT'");
     $rows = $query->fetch_assoc();
-    if(count($rows) == 1)
+
+	if(count($rows) == 1)
       return true;
 
     $tableName = $this->_subjectID . "_SM8_FAT";
 
-    //Create table
-    $this->_Mysqli->query("CREATE TABLE `StudyM8_UserData`.`$tableName` ( `rid` BIGINT NOT NULL AUTO_INCREMENT , `fileID` VARCHAR(30) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'GFile ID' , `rName` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rSection` INT NOT NULL COMMENT 'Translated from index table' , `rUnit` INT NOT NULL COMMENT 'Translated from index table' , `rTags` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rDescription` VARCHAR(2048) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , PRIMARY KEY (`rid`), INDEX (`rName`), INDEX (`rSection`, `rUnit`), UNIQUE (`fileID`), FULLTEXT (`rDescription`), FULLTEXT (`rTags`)) ENGINE = InnoDB;");
+	//Access UserData table to create database
+	if(!$mysqli_userdata = sqlConnect(2)){
+		$this->setErrorMessage("Database error!");
+		//TODO: delete folder from google
+		return false;
+	}
 
-    return true;
+    //Create table
+    $mysqli_userdata->query("CREATE TABLE `StudyM8_UserData`.`$tableName` ( `rid` BIGINT NOT NULL AUTO_INCREMENT , `fileID` VARCHAR(30) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'GFile ID' , `rName` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rSection` INT NOT NULL COMMENT 'Translated from index table' , `rUnit` INT NOT NULL COMMENT 'Translated from index table' , `rTags` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rDescription` VARCHAR(2048) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , PRIMARY KEY (`rid`), INDEX (`rName`), INDEX (`rSection`, `rUnit`), UNIQUE (`fileID`), FULLTEXT (`rDescription`), FULLTEXT (`rTags`)) ENGINE = InnoDB;");
+	if($mysqli_userdata->affected_rows)
+		return true;
+	else
+		$this->setErrorMessage("Database error!");
+		return false;
   }
 
 }

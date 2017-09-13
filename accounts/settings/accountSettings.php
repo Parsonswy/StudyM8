@@ -1,7 +1,7 @@
 <?php
   //Cases corispond to primary functions in AccoutnSetup.php
   //require("/var/www/html/accounts/proc/checkLogin.php");
-
+	session_start();//TODO:remove when login check is fixed
   if(!ISSET($_GET["cfg"]))
     $cfg = null;
   else
@@ -15,10 +15,10 @@ switch($cfg){
     $AccountSetup->GDrive_API_Init_CFG();
   break; case "GDrive_API_Setup"://Post Access Token - Configure Drive
     //$code is defined in oAuthCallback, which calls this script and triggers case
-    if(!$errMSG = $AccountSetup->GDrive_API_Setup($code))
-      exit($errMSG);
+    if($AccountSetup->GDrive_API_Setup($code))
+      exit("[SM8]" . $AccountSetup->getErrorMessage());
 
-    exit("OK"):
+    exit("OK");
   break;default:
     //TODO: Display default account settings page
   break;

@@ -10,11 +10,11 @@
   $code = @$_GET["code"];
   $error = @$_GET["error"];
   if(!(strlen($code) > 1))
-    exit("[SM8]An API error has occured - " . $error)
+    exit("[SM8]An API error has occured - " . $error);
 //TODO: Asses weather this is needed, or can be removed since all cases might just set the get varible to the session variable value
   switch($_SESSION["oAuth_Action"]){
-    case "GDrive_InitSetup":
-      $_GET["cfg"] = "GDrive_InitSetup";
+    case "GDrive_API_Setup":
+      $_GET["cfg"] = "GDrive_API_Setup";
       require("./accountSettings.php");
     break; default:
       exit("[SM8]An API sorting error has occured.");
