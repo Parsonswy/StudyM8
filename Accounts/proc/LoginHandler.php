@@ -142,7 +142,7 @@ class LoginHandler{
       setcookie("SM8SUB",$this->_GUserData->sub,(time() + 60 * 60 * 24 * 30), "/", "studym8.org", true, true);
       setcookie("SM8TK",$SM8_Token,(time() + 60 * 60 * 24 * 30), "/", "studym8.org", true, true);
 
-      $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='" . session_ID() . "', `lastLogin`='" . time() . "' WHERE `subject`='$this->_subject'");
+      $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='" . session_ID() . "' WHERE `subject`='$this->_subject'");
       echo $this->_Mysqli->error . "</br>";
 	  if(!$this->_Mysqli->affected_rows){
         $this->sessionDestroy();

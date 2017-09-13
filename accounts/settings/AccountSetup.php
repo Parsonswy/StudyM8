@@ -1,8 +1,4 @@
 <?php
-/*************************************
-* Handle first time setup tasks / events
-* Handle account setting changes
-*************************************/
 class AccountSetup{
   private $_Google_Client;  //General / Account API Calls
   private $_Google_Drive_Client;  //Drive API Calls
@@ -21,27 +17,6 @@ class AccountSetup{
   private function setErrorMessage($msg){
     $this->_errorMessage = $msg;
   }
-  ///////////////////////////////////////////
-  //  Google Accounts API Service Client
-  //
-  private function initGoogleClient($token){
-    require("./../../exAPIS/GAPI/vendor/autoload.php");
-    $this->_Google_Client = new Google_Client();
-    $this->_Google_Client->setAuthConfig("./../../exAPIS/GAPI/client_secret_714276037632-o78r4g32of31cbpaa59jd279vg5sbrqm.apps.googleusercontent.com.json");
-    $this->_Google_Client->setIncludeGrantedScopes(true);
-    $this->_Google_Client->setAccessType("offline")
-    $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
-
-    if($token)//oAuthG2
-      $this->_Google_Client->setAccessToken($token);
-  }
-
-  /////////////////////////////////////////
-  // Drive API Service Client
-  //
-  private function initDriveClient(){
-    $this->_Google_Drive_Client = new Google_Service_Drive($this->_Google_Client);
-  }
 
   ///////////////////////////////////////////
   //  SM8 Database link
@@ -54,34 +29,64 @@ class AccountSetup{
     $this->setErrorMessage("[SM8DB]Error Contacting Database");
     return false;
   }
+  ///////////////////////////////////////////
+  //  Google Accounts API Service Client
+  //
+  private function initGoogleClient(){
+    require("./../../exAPIS/GAPI/vendor/autoload.php");
+    $this->_Google_Client = new Google_Client();
+    $this->_Google_Client->setAuthConfig("./../../exAPIS/GAPI/client_secret_714276037632-o78r4g32of31cbpaa59jd279vg5sbrqm.apps.googleusercontent.com.json");
+    $this->_Google_Client->setIncludeGrantedScopes(true);
+    $this->_Google_Client->setAccessType("offline");
+    $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
+  }
+
+  private function setGoogleClientAPIToken($token){
+      $this->_Google_Client->setAccessToken($token);
+  }
 
   /////////////////////////////////////////
-  //Sets Google Drive Permission Scope
-  //Sends users to Google to allow access
-  public function oAuthG1(){
+  // Drive API Service Client
+  //
+  private function initDriveClient(){
+    $this->_Google_Drive_Client = new Google_Service_Drive($this->_Google_Client);
+  }
+
+  ////////////////////////////////////////
+  //Send user to Google, requesting permission scope defined in Google Client
+  //
+  public function GDrive_API_Init_CFG(){
     $this->initGoogleClient();
-    $Google_Client->setRedirectUri("https://studym8.org/accounts/settings/accountSettings.php");
-    $authUrl = $Google_Client->createAuthUrl();
+
+    //Config client to request access
+    $this->_Google_Client->setRedirectUri("https://studym8.org/accounts/settings/oAuthCallback.php");
+    $authUrl = $this->_Google_Client->createAuthUrl();
+
+    $_SESSION["oAuth_Action"] = "GDrive_API_Setup"
     header("Location: " . $authUrl);
     exit();
   }
-
-
-  ////////////////////////////////////////
-  // 2nd part of oAuth authentication
-  //  Takes received auth code and exchanges it for access token
-  public function oAuthG2(){
+  ///
+  /////////////////////////////////////
+  //Process returned token request from google
+  //
+  public function GDrive_API_Setup($code){
     $this->initGoogleClient();
-    if(!$this->initMysql(1);//SM8 User data db link)
+    if(!$this->initMysql(1))//SM8 User data db link)
       return false;
 
-    $this->_Google_Client->authenticate($msg);
+    //$accessToken = $this->_Google_Client->fetchAccessTokenWithAuthCode($code);
+    $this->_Google_Client->authenticate($code)
     $accessToken = $this->_Google_Client->getAccessToken();
 
-    $_SESSION["gAPI_Token"] = $accessToken;
-
     $this->_subjectID = $this->_Mysqli->real_escape_string($_COOKIE["SM8SUB"]);
-    $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `gAPI_accessToken`=$accessToken WHERE `subject`=$this->_subjectID");
+    $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `gAPI_accessToken`='$accessToken' WHERE `subject`='$this->_subjectID'");
+
+	if(!$this->_Mysqli->affected_rows == 1){
+		//$this->_errorMessage = "[SM8]DB Error";
+		$this->setErrorMessage("{DB}" . $this->_Mysqli->error . " - " . $accessToken);
+		return false;
+	}
 
     if(!$this->setupGDrive())
       return false;
@@ -96,7 +101,7 @@ class AccountSetup{
   //First time drive setup
   //
   private function setupGDrive(){
-    $fData = new Google_Service_Drive_DriveFile(array("title" => "StudyM8 Storage","mimeType"="application/vnd.google-apps.folder"));
+    $fData = new Google_Service_Drive_DriveFile(array("title" => "StudyM8 Storage","mimeType"=>"application/vnd.google-apps.folder"));
     $file = $this->_Google_Drive_Client->files->insert($fData, array("fields"=>"id"));
 
     $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `sm8GFolder`=$file->id WHERE `subject`=$this->_subjectID");
@@ -117,7 +122,7 @@ class AccountSetup{
   //
   private function setupSM8Db(){
     $query = $this->_Mysqli->query("SHOW TABLES LIKE " . $Subject . "_SM8_FAT");
-    $rows = $query->fetch_assoc()
+    $rows = $query->fetch_assoc();
     if(count($rows) == 1)
       return true;
 

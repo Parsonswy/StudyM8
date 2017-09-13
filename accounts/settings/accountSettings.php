@@ -1,42 +1,26 @@
 <?php
-/****************************************
-* Dynamic page where user can modify / manage their account
-* Passes all actions through to class: AccountSetup
-****************************************/
-//default: noraml account page
-//G1: send access token request / redirect for prompting
-//G2[code || error]: From Google, authorization for drive
-if($_GET["config"]){$cfg = $_GET["cfg"];}
-else{$cfg = "default"}
+  //Cases corispond to primary functions in AccoutnSetup.php
+  //require("/var/www/html/accounts/proc/checkLogin.php");
 
-require("/var/www/html/accounts/proc/checkLogin.php");
+  if(!ISSET($_GET["cfg"]))
+    $cfg = null;
+  else
+    $cfg = $_GET["cfg"];
 
 require("./AccountSetup.php");
 $AccountSetup = new AccountSetup();
 
 switch($cfg){
-  case "G1":
+  case "GDrive_API_Init_CFG"://Create API Access Token Request
+    $AccountSetup->GDrive_API_Init_CFG();
+  break; case "GDrive_API_Setup"://Post Access Token - Configure Drive
+    //$code is defined in oAuthCallback, which calls this script and triggers case
+    if(!$errMSG = $AccountSetup->GDrive_API_Setup($code))
+      exit($errMSG);
 
-      $AccountSetup->oAuthG1();//GAPI, access token request, redirect user
-
-  break; ;default:
-
-    //oAuth Response from Google
-    if($_GET["code"])
-      oAuthG2(true, $_GET["code"]);
-    if($_GET["error"])
-      oAuthG2(false, $_GET["error"]);
-
+    exit("OK"):
+  break;default:
+    //TODO: Display default account settings page
   break;
-}
-
-function oAuthG2($stat, $msg){
-  if($stat)
-    exit("[GAPI]Error" . $msg);
-
-  if($AccountSetup->oAuthG2())
-    exit("Database Created");
-
-  exit("[SM8]Error ". $AccountSetup->getErrorMessage());
 }
 ?>
