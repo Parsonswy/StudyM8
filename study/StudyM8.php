@@ -1,5 +1,6 @@
 <?php
-
+//Security Check
+require("/var/www/html/accounts/proc/checkLogin.php")
 ?>
 <!DOCTYPE html>
 <html>

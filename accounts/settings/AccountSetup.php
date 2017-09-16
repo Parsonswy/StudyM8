@@ -39,7 +39,7 @@ class AccountSetup{
     $this->_Google_Client->setIncludeGrantedScopes(true);
     $this->_Google_Client->setAccessType("offline");
     $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
-	$this->_Google_Client->setRedirectUri("https://studym8.org/accounts/settings/oAuthCallback.php");
+	  $this->_Google_Client->setRedirectUri("https://studym8.org/accounts/settings/oAuthCallback.php");
   }
 
   private function setGoogleClientAPIToken($token){

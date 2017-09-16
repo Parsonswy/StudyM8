@@ -78,7 +78,7 @@ function fileDeck_ConfigureBoard(){
 //Pool is file grouping / post submission
 function SM8_ProcessFilePool(){
   var formData = new FormData(Form);//Auto creates obj with data already in fields
-  formData.append("action","create");
+  formData.append("action","create_upload");
 
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.open("POST","./proc/CreateStudyResource.php",true);

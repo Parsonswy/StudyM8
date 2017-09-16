@@ -42,5 +42,10 @@ function reassignSession(){
   $_SESSION["gAPI_Token"] = $rows["gAPI_accessToken"];
   $_SESSION["sm8GFolder"] = $rows["sm8GFolder"];
   $_SESSION["sm8FATDB"] = $rows["sm8ID"] . "_SM8_FAT";
+
+  echo "<pre>";
+  echo var_dump($_SESSION) . "<br/>" . var_dump($_COOKIE);
+  echo "</pre>" . " <br/> 200 OK";
+  exit();
 }
 ?>

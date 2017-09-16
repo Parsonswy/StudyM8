@@ -174,6 +174,17 @@ class LoginHandler{
 
 /************************************************************
 *
+* Logout
+*
+*************************************************************/
+    //"Main" function for user logout
+    //Revoke gAPI Access Token
+    //Remove session / cookie data
+    public function logoutOfAccount(){
+
+    }
+/************************************************************
+*
 * Outside noraml class stack flow
 *
 *************************************************************/
