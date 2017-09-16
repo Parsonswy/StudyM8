@@ -1,0 +1,15 @@
+{
+    "name": "studym8/studym8",
+    "description": "StudyM8 - Student Assistant",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Wyatt Parsons",
+            "email": "parsonswy@gmail.com"
+        }
+    ],
+    "require": {
+        "google/apiclient": "^2.0",
+        "rmccue/requests": "^1.7"
+    }
+}

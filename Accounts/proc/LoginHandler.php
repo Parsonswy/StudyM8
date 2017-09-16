@@ -21,7 +21,7 @@ class LoginHandler{
       //Get Google API Client, Create Instance, Load Creds
       require("./../../exAPIS/GAPI/vendor/autoload.php");
       $this->_Google_Client = new Google_Client();
-      $this->_Google_Client->setAuthConfig("./../../exAPIS/GAPI/client_secret_714276037632-o78r4g32of31cbpaa59jd279vg5sbrqm.apps.googleusercontent.com.json");
+      $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
     }
 
     private function setErrorMessage($msg){

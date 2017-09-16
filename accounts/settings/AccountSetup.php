@@ -35,7 +35,7 @@ class AccountSetup{
   private function initGoogleClient(){
     require("./../../exAPIS/GAPI/vendor/autoload.php");
     $this->_Google_Client = new Google_Client();
-    $this->_Google_Client->setAuthConfig("./../../exAPIS/GAPI/client_secret_714276037632-o78r4g32of31cbpaa59jd279vg5sbrqm.apps.googleusercontent.com.json");
+    $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
     $this->_Google_Client->setIncludeGrantedScopes(true);
     $this->_Google_Client->setAccessType("offline");
     $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
