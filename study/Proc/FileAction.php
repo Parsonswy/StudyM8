@@ -33,7 +33,7 @@
     }
 
     private function initGoogleClient(){
-      require("/var/www/html/exAPIS/GAPI/vendor/autoload.php");
+      require("/var/www/studym8/latest/vendor/autoload.php");
       $this->_Google_Client = new Google_Client();
       $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
       $this->_Google_Client->setIncludeGrantedScopes(true);

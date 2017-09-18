@@ -19,7 +19,7 @@ class LoginHandler{
 
     public function __construct(){
       //Get Google API Client, Create Instance, Load Creds
-      require("./../../exAPIS/GAPI/vendor/autoload.php");
+      require("/var/www/studym8/latest/vendor/autoload.php");
       $this->_Google_Client = new Google_Client();
       $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
     }
@@ -56,7 +56,7 @@ class LoginHandler{
     //Verifies API token and token issuer
     private function validateGoogleToken(){
       //Requests API - Used for HTTP/S requests
-      require("./../../exAPIS/Requests/library/Requests.php");
+      require("/var/www/studym8/latest/vendor/rmccue/requests/library/Requests.php");
       Requests::register_autoloader();
       $url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" . $this->_userGAPIToken;
       $request = Requests::get($url, array('Accept' => 'application/json'));

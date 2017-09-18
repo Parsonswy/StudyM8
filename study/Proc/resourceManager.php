@@ -5,7 +5,7 @@
 */
 
 //Verify user is logged in
-require("./../../accounts/proc/checkLogin.php");
+require("/var/www/studym8/latest/accounts/proc/checkLogin.php");
 
 //reportUploadError()
 $errData = array();
