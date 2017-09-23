@@ -17,7 +17,7 @@ switch($_POST["action"]){
     for($i = 0; $i < count($_FILES); $i++){
       if($_FILE["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"] == 0){
         $csr = new CreateStudyResource($_FILE["SM8_UploadItems_Form_FilePool_Upload_" . $i], $i);
-        if(!$csr[0])//if server error'd
+        if(!$csr)//if server error'd
           reportUploadError($csr->getErrorMessage());
         continue;
       }

@@ -81,7 +81,7 @@ function SM8_ProcessFilePool(){
   formData.append("action","create_upload");
 
   var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open("POST","./proc/CreateStudyResource.php",true);
+  xmlHttp.open("POST","./proc/resourceManager.php",true);
   xmlHttp.onreadystatechange = function(){
     if(xmlHttp.status == 200 && xmlHttp.readystate == 4){
       console.log("[DEBUG]File Upload Sucesful - Reponse data: " + xmlHttp.reponseText);
@@ -89,6 +89,6 @@ function SM8_ProcessFilePool(){
       console.log("[DEBUG]File Upload Failed - Reponse data: " + xmlHttp.reponseText);
     }
   }
-
-  xmlHttp.send(formData);//Send auto filled form data object
+  console.log(formData);
+  //xmlHttp.send(formData);//Send auto filled form data object
 }

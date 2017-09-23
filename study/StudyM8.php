@@ -50,7 +50,8 @@ require("/var/www/studym8/latest/accounts/proc/checkLogin.php")
 				Add New File
 			</div>
 			<div id="SM8_UploadItems_ControlRow_SubmitForm">
-				<input type="submit" value="Submit Files"/>
+        <input type="hidden" name="action" value="create"/>
+        <input type="submit" value="Submit Files"/>
 			</div>
 		</div>
 		</form><!--TODO:Position properly and fix <close> order-->
