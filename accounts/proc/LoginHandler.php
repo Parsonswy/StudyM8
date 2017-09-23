@@ -157,6 +157,7 @@ class LoginHandler{
     private function sessionDestroy(){
       session_destroy();
       setcookie("SM8SUB",null,time()-3600,"","studym8.org",true,true);
+      setcookie("SM8TK",null,time()-3600,"","studym8.org",true,true);
       $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='' WHERE `subject`=$this->_subject");
     }
 
