@@ -43,16 +43,12 @@ if(count($_SESSION) != 6)
   reassignSession();
 
 function reassignSession(){
+  GLOBAL $rows;
   $_SESSION["SM8ID"] = $rows["sm8ID"];
   $_SESSION["SM8NAME"] = $rows["name"];
   $_SESSION["SM8Email"] = $rows["email"];
   $_SESSION["gAPI_Token"] = $rows["gAPI_accessToken"];
   $_SESSION["sm8GFolder"] = $rows["sm8GFolder"];
   $_SESSION["sm8FATDB"] = $rows["sm8ID"] . "_SM8_FAT";
-
-  echo "<pre>";
-  echo var_dump($_SESSION) . "<br/>" . var_dump($_COOKIE);
-  echo "</pre>" . " <br/> 200 OK";
-  exit();
 }
 ?>

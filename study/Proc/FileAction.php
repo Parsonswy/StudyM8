@@ -1,5 +1,5 @@
 <?php
-  class rpAction{
+  class FileAction{
     protected $_dataSQLi
     protected $_webSQLi;
 
@@ -42,7 +42,12 @@
     }
 
     protected function initWebSQL(){
+      require("/var/www/.html/dataSQLi.php");
+      if($this->_dataSQLi = sqlConnect(1))
+        return true;
 
+      $this->setErrorMessage("[SM8DB] Error contacting StudyM8 database.");
+      return false;
     }
 
     protected function initDataSQL(){

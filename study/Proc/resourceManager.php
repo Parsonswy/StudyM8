@@ -12,11 +12,11 @@ $errData = array();
 $errCount = 0;
 
 switch($_POST["action"]){
-  case "create":
+  case "create_upload":
     //Loop through all uploaded files and pass reference to data array
     for($i = 0; $i < count($_FILES); $i++){
-      if($_FILE["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"] == 0){
-        $csr = new CreateStudyResource($_FILE["SM8_UploadItems_Form_FilePool_Upload_" . $i], $i);
+      if($_FILES["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"] == 0){
+        $csr = new CreateStudyResource($_FILES["SM8_UploadItems_Form_FilePool_Upload_" . $i], $i);
         if(!$csr)//if server error'd
           reportUploadError($csr->getErrorMessage());
         continue;
@@ -41,7 +41,7 @@ if($errCount > 0){
 Helper functions
 *******************************************************************************/
 function reportUploadError($err){
-  array_push($errData, $err);.
+  array_push($errData, $err);
   $errCount++;
 }
  ?>

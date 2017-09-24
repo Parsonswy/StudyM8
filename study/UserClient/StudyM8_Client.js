@@ -60,10 +60,10 @@ function fileDeck_ConfigureBoard(){
               </select>\
       </div>\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Tags: <input type="text" name="' + FileDeck_FilesOnDeck + '_Tags" value=""/ placeholder="Seperate with commas">\
+        Tags: <input type="text" name="' + FileDeck_FilesOnDeck + '_FDeck_Tags" value=""/ placeholder="Seperate with commas">\
       </div>\
       <div class="SM8_UploadItems_Form_FileDeck_BoardContentItem">\
-        Descritpion: <textarea style="resize:none;" rows="5" cols="45" name="' + FileDeck_FilesOnDeck + '_Description" value=""/ placeholder="Descrption / Summary / and or notes."></textarea>\
+        Descritpion: <textarea style="resize:none;" rows="5" cols="45" name="' + FileDeck_FilesOnDeck + '_FDeck_Description" value=""/ placeholder="Descrption / Summary / and or notes."></textarea>\
       </div>\
     </div>\
   </div>';
@@ -81,7 +81,7 @@ function SM8_ProcessFilePool(){
   formData.append("action","create_upload");
 
   var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open("POST","./proc/resourceManager.php",true);
+  xmlHttp.open("POST","./Proc/resourceManager.php",true);
   xmlHttp.onreadystatechange = function(){
     if(xmlHttp.status == 200 && xmlHttp.readystate == 4){
       console.log("[DEBUG]File Upload Sucesful - Reponse data: " + xmlHttp.reponseText);
@@ -89,6 +89,5 @@ function SM8_ProcessFilePool(){
       console.log("[DEBUG]File Upload Failed - Reponse data: " + xmlHttp.reponseText);
     }
   }
-  console.log(formData);
-  //xmlHttp.send(formData);//Send auto filled form data object
+  xmlHttp.send(formData);//Send auto filled form data object
 }

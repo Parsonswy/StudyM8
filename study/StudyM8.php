@@ -50,7 +50,6 @@ require("/var/www/studym8/latest/accounts/proc/checkLogin.php")
 				Add New File
 			</div>
 			<div id="SM8_UploadItems_ControlRow_SubmitForm">
-        <input type="hidden" name="action" value="create"/>
         <input type="submit" value="Submit Files"/>
 			</div>
 		</div>
@@ -63,7 +62,7 @@ require("/var/www/studym8/latest/accounts/proc/checkLogin.php")
         home row
       </div>
     </div>
-    <script type="text/javascript" src="./UserClinet/StudyM8_Client.js"></script>
+    <script type="text/javascript" src="./UserClient/StudyM8_Client.js"></script>
     <script type="text/javascript" src="./UserClient/StudyM8_Visuals.js"></script>
   </body>
 </html>

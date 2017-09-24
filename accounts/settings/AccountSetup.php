@@ -139,7 +139,7 @@ class AccountSetup{
 	}
 
     //Create table
-    $mysqli_userdata->query("CREATE TABLE `StudyM8_UserData`.`$tableName` ( `rid` BIGINT NOT NULL AUTO_INCREMENT , `fileID` VARCHAR(30) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'GFile ID' , `rName` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rSection` INT NOT NULL COMMENT 'Translated from index table' , `rUnit` INT NOT NULL COMMENT 'Translated from index table' , `rTags` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rDescription` VARCHAR(2048) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , PRIMARY KEY (`rid`), INDEX (`rName`), INDEX (`rSection`, `rUnit`), UNIQUE (`fileID`), FULLTEXT (`rDescription`), FULLTEXT (`rTags`)) ENGINE = InnoDB;");
+    $mysqli_userdata->query("CREATE TABLE `StudyM8_UserData`.`$tableName` ( `rid` BIGINT NOT NULL AUTO_INCREMENT , `fileID` VARCHAR(30) CHARACTER SET ascii COLLATE ascii_bin NOT NULL COMMENT 'GFile ID' , `rName` VARCHAR(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rSection` INT NOT NULL COMMENT 'Translated from index table' , `rUnit` INT NOT NULL COMMENT 'Translated from index table' , `rTags` VARCHAR(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , `rNotes` VARCHAR(2048) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL , PRIMARY KEY (`rid`), INDEX (`rName`), INDEX (`rSection`, `rUnit`), UNIQUE (`fileID`), FULLTEXT (`rNotes`), FULLTEXT (`rTags`)) ENGINE = InnoDB;");
 	if($mysqli_userdata->affected_rows)
 		return true;
 	else
@@ -148,4 +148,10 @@ class AccountSetup{
   }
 
 }
+
+/*
+Subjects: List all classID s that user wants to see when they use dropdown
+Store list of numbers ',' seperated
+Consider moving / copying subjects table to memory at startup
+*/
 ?>
