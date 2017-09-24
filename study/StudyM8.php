@@ -5,6 +5,11 @@ require("/var/www/studym8/latest/accounts/proc/checkLogin.php")
 <!DOCTYPE html>
 <html>
   <head>
+    <title>StudyM8 - Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
     <link rel="stylesheet" href="./Study.css"/>
   </head>
   <body onload="calculateNormals();" onresize="calculateNormals();" onclick="toggleFields();">
@@ -45,15 +50,15 @@ require("/var/www/studym8/latest/accounts/proc/checkLogin.php")
               <!--Populated with drop down divs by JS as files are added to the pool-->
           </div>
         </div><!--File Upload Wrapper-->
-		<div class="SM8_UploadItems_ControlRow">
-			<div id="SM8_UploadItems_ControlRow_AddFile" onclick="fileDeck_AddFile();">
-				Add New File
-			</div>
-			<div id="SM8_UploadItems_ControlRow_SubmitForm">
-        <input type="submit" value="Submit Files"/>
-			</div>
-		</div>
-		</form><!--TODO:Position properly and fix <close> order-->
+    		<div class="SM8_UploadItems_ControlRow">
+    			<div id="SM8_UploadItems_ControlRow_AddFile" onclick="fileDeck_AddFile();">
+    				Add New File
+    			</div>
+    			<div id="SM8_UploadItems_ControlRow_SubmitForm">
+            <input type="submit" value="Submit Files"/>
+    			</div>
+    		</div>
+  		</form><!--TODO:Position properly and fix <close> order-->
 		<div class="SM8_UploadItems_Opaque" onclick="SM8_UploadItemsPop();"></div><!--background-->
 		</div><!--ItemUpload Form Wrapper-->
       </div><!-- Main Browswer Window Wrapper-->
