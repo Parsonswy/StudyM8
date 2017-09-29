@@ -21,7 +21,7 @@ if(!$Mysqli = sqlConnect(1))
 $subject = $Mysqli->real_escape_string($_COOKIE["SM8SUB"]);
 
 $query = $Mysqli->query("SELECT `sm8ID`,`name`,`email`,`gAPI_accessToken`,`sm8GFolder`,`gAPI_Refresh_Token`,`lastLogin` FROM `M8_Users` WHERE `subject`='$subject'");
-if($query->num_rows != 1){
+if($Mysqli->num_rows != 1){
   exit("Error contacting logon server.");
 }
 
