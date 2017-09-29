@@ -15,7 +15,7 @@ switch($cfg){
     $AccountSetup->GDrive_API_Init_CFG();
   break; case "GDrive_API_Setup"://Post Access Token - Configure Drive
     //$code is defined in oAuthCallback, which calls this script and triggers case
-    if($AccountSetup->GDrive_API_Setup($code))
+    if(!$AccountSetup->GDrive_API_Setup($code))
       exit("[SM8]" . $AccountSetup->getErrorMessage());
 
     exit("OK");

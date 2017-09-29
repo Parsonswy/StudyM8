@@ -70,7 +70,7 @@
       $this->_Google_Client->setAccessType("offline");
       $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
       $this->_Google_Client->setAccessToken($_SESSION["gAPI_Token"]);
-      $this->_Google_Client->refreshToken($_SESSION["gAPI_Token"]);
+      $this->_Google_Client->refreshToken($_SESSION["gAPI_Refresh_Token"]);
     }
 
     private function initDriveService(){

@@ -79,6 +79,7 @@ class AccountSetup{
 		$accessToken = $this->_Google_Client->getAccessToken()["access_token"];
 		$refreshToken = $this->_Google_Client->getRefreshToken();
     $this->_subjectID = $this->_Mysqli->real_escape_string($_COOKIE["SM8SUB"]);
+    //TODO: ECY
     $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `gAPI_accessToken`='$accessToken', `gAPI_refreshToken`='$refreshToken' WHERE `subject`='$this->_subjectID'");
 
 		if($this->_Mysqli->affected_rows != 1){

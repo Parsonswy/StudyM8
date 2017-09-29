@@ -20,7 +20,7 @@ if(!$Mysqli = sqlConnect(1))
 
 $subject = $Mysqli->real_escape_string($_COOKIE["SM8SUB"]);
 
-$query = $Mysqli->query("SELECT `sm8ID`,`name`,`email`,`gAPI_accessToken`,`sm8GFolder`,`lastLogin` FROM `M8_Users` WHERE `subject`='$subject'");
+$query = $Mysqli->query("SELECT `sm8ID`,`name`,`email`,`gAPI_accessToken`,`sm8GFolder`,`gAPI_Refresh_Token`,`lastLogin` FROM `M8_Users` WHERE `subject`='$subject'");
 if($query->num_rows != 1){
   exit("Error contacting logon server.");
 }
@@ -48,6 +48,7 @@ function reassignSession(){
   $_SESSION["SM8NAME"] = $rows["name"];
   $_SESSION["SM8Email"] = $rows["email"];
   $_SESSION["gAPI_Token"] = $rows["gAPI_accessToken"];
+  $_SESSION["gAPI_Refresh_Token"] = $rows["gAPI_Refresh_Token"]
   $_SESSION["sm8GFolder"] = $rows["sm8GFolder"];
   $_SESSION["sm8FATDB"] = $rows["sm8ID"] . "_SM8_FAT";
 }
