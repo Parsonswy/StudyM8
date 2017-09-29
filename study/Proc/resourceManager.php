@@ -9,19 +9,24 @@ require("/var/www/studym8/latest/accounts/proc/checkLogin.php");
 
 //reportUploadError()
 $errData = array();
-$errCount = 0;
+
+echo "<pre>";
+var_dump($_POST);
+echo "</pre>";
 
 switch($_POST["action"]){
   case "create_upload":
+    require("./CreateStudyResource.php");
     //Loop through all uploaded files and pass reference to data array
     for($i = 0; $i < count($_FILES); $i++){
       if($_FILES["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"] == 0){
         $csr = new CreateStudyResource($_FILES["SM8_UploadItems_Form_FilePool_Upload_" . $i], $i);
-        if(!$csr)//if server error'd
+				$rp = $csr->processResource();
+        if(!$rp)//if server error'd
           reportUploadError($csr->getErrorMessage());
         continue;
       }
-      reportUploadError($_FILE["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"]);
+      reportUploadError($_FILES["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"]);
     }
   break;case "delete":
 
@@ -32,8 +37,9 @@ switch($_POST["action"]){
   break;
 }
 
-if($errCount > 0){
+if(count($errData) > 0){
   echo "Errors occured during file upload. Some files may not have processed <br/><pre>";
+	echo $rp;
   var_dump($errData);
   echo "</pre>";
 }
@@ -41,7 +47,7 @@ if($errCount > 0){
 Helper functions
 *******************************************************************************/
 function reportUploadError($err){
+	GLOBAL $errData;
   array_push($errData, $err);
-  $errCount++;
 }
  ?>

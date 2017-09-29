@@ -16,37 +16,37 @@ require("./FileAction.php");
       //Driver will skip file if error in upload
       //
       public function __construct($file, $paramInstance){
-       //SQL / GAPI resources
-     echo "init";
-       if(!parent::__construct())
-         return false;
-     echo "init'ed";
-       $this->_file = $file;
-       $this->_fileName = $file["name"];
-       $this->_fileType = $file["type"];
-       $this->_fileLocation = $file["tmp_name"];
-       $this->_fileSize = $this->_dataSQLi->real_escape_string($file["size"]);
+        //SQL / GAPI resources
+			echo "init";
+				if(!$this->init())
+          return false;
+			echo "init'ed";
+        $this->_file = $file;
+        $this->_fileName = $file["name"];
+        $this->_fileType = $file["type"];
+        $this->_fileLocation = $file["tmp_name"];
+        $this->_fileSize = $this->_dataSQLi->real_escape_string($file["size"]);
 
-       $this->configRParameters($paramInstance);//Form data sync
-     }
+        $this->configRParameters($paramInstance);//Form data sync
+      }
 
-     public function processResource(){
-         echo "params";
-       if(!$this->insertToM8Database())
-         return false;//erorr message set in insertToM8Database()
-       echo "M8 DB";
-         if(!$this->sendToGoogle())
-           return false;
-       echo "google'd";
-     }
+			public function processResource(){
+					echo "params";
+        if(!$this->insertToM8Database())
+          return false;//erorr message set in insertToM8Database()
+				echo "M8 DB";
+					if(!$this->sendToGoogle())
+						return false;
+				echo "google'd";
+			}
 
       //////////////////////
       //Clearn RPs in $p[aram]i[nstance]
       //Set conrisponding properties
       private function configRParameters($pi){
         $this->_rpName = $this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_EntryName"]);
-        $this->_rpSection = $this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_Section"]);
-        $this->_rpUnit = $this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_Unit"]);
+        $this->_rpSection = intval($this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_Section"]));
+        $this->_rpUnit = intval($this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_Unit"]));
         $this->_rpTags = $this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_Tags"]);
         $this->_rpNotes = $this->_dataSQLi->real_escape_string($_POST[$pi . "_FDeck_Description"]);
       }
@@ -55,22 +55,20 @@ require("./FileAction.php");
       //Insert resource parameters to StudyM8 Database
       //
       private function insertToM8Database(){
-        $query = $this->_dataSQLi->query("INSERT INTO `" . $_SESSION['sm8FATDB'] . "` VALUES('',
+        $query = $this->_dataSQLi->query("INSERT INTO `" . $_SESSION['sm8FATDB'] . "` VALUES('0',
                                                                       'proc',
                                                                       '$this->_rpName',
-                                                                      '0',
                                                                       '$this->_rpSection',
                                                                       '$this->_rpUnit',
                                                                       '$this->_rpTags',
                                                                       '$this->_rpNotes',
-                                                                      '0',
                                                                       '$this->_fileSize')");
-        if(!$this->_dataSQLi->affected_rows){
+        if($this->_dataSQLi->affected_rows != 1){
           $this->setErrorMessage("Database error! - " . $this->_dataSQLi->error);
 echo "AFR error";
           return false;
         }
-
+echo " [AFR] " . $this->_dataSQLi->affected_rows . "  --  " . $this->_dataSQLi->error . "; ";
         $this->_rpID = $this->_dataSQLi->insert_id;
 echo "inserted";
         return true;
@@ -78,9 +76,9 @@ echo "inserted";
 
       private function reportToSM8DB($fileID){
         $query = $this->_dataSQLi->query("UPDATE `" . $_SESSION['sm8FATDB'] . "` SET `fileID`='$fileID' WHERE `rid`='$this->_rpID'");
-        if($this->_dataSQLi->affected_rows != 1){
-          $this->setErrorMessage("[SM8DB]Error Contacting Database");
-          return fasle;
+        if(!$this->_dataSQLi->affected_rows == 1){
+          $this->setErrorMessage("[SM8DB]Error Contacting Database " . $this->_dataSQLi->error);
+          return false;
         }
         return true;
       }

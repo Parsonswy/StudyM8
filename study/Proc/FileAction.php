@@ -1,6 +1,6 @@
 <?php
   class FileAction{
-    protected $_dataSQLi
+    protected $_dataSQLi;
     protected $_webSQLi;
 
     protected $_errorMessage;
@@ -27,6 +27,10 @@
     protected $_rpSize;
 
     public function __construct(){
+
+    }
+
+    protected function init(){
       if(!$this->initWebSQL()){
         $this->setErrorMessage("[SM8]Databaes error");
         return false;
@@ -39,10 +43,10 @@
 
       $this->initGoogleClient();
       $this->initDriveService();
+      return true;
     }
-
+    //SQL init functions loaded in checkLogin.php
     protected function initWebSQL(){
-      require("/var/www/.html/dataSQLi.php");
       if($this->_dataSQLi = sqlConnect(1))
         return true;
 
@@ -51,7 +55,6 @@
     }
 
     protected function initDataSQL(){
-      require("/var/www/.html/dataSQLi.php");
       if($this->_dataSQLi = sqlConnect(2))
         return true;
 
@@ -65,8 +68,9 @@
       $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
       $this->_Google_Client->setIncludeGrantedScopes(true);
       $this->_Google_Client->setAccessType("offline");
-      $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_rp);//Probably right
-      $this->_Google_Client->setAccessToken($_SESSION["gAPI_accessToken"]);
+      $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
+      $this->_Google_Client->setAccessToken($_SESSION["gAPI_Token"]);
+      $this->_Google_Client->refreshToken($_SESSION["gAPI_Token"]);
     }
 
     private function initDriveService(){
