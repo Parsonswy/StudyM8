@@ -48,7 +48,7 @@ function reassignSession(){
   $_SESSION["SM8NAME"] = $rows["name"];
   $_SESSION["SM8Email"] = $rows["email"];
   $_SESSION["gAPI_Token"] = $rows["gAPI_accessToken"];
-  $_SESSION["gAPI_Refresh_Token"] = $rows["gAPI_Refresh_Token"]
+  $_SESSION["gAPI_Refresh_Token"] = $rows["gAPI_Refresh_Token"];
   $_SESSION["sm8GFolder"] = $rows["sm8GFolder"];
   $_SESSION["sm8FATDB"] = $rows["sm8ID"] . "_SM8_FAT";
 }
