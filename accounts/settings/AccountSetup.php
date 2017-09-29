@@ -66,7 +66,7 @@ class AccountSetup{
     header("Location: " . $authUrl);
     exit();
   }
-  ///
+
   /////////////////////////////////////
   //Process returned token request from google
   //
@@ -75,20 +75,18 @@ class AccountSetup{
     if(!$this->initMysql(1))//SM8 User data db link)
       return false;
 
-    $resp = $this->_Google_Client->fetchAccessTokenWithAuthCode($code);
-	$accessToken = $resp["access_token"];
-	$this->_Google_Client->setAccessToken($accessToken);
-
+    $this->_Google_Client->authenticate($code);
+		$accessToken = $this->_Google_Client->getAccessToken()["access_token"];
+		$refreshToken = $this->_Google_Client->getRefreshToken();
     $this->_subjectID = $this->_Mysqli->real_escape_string($_COOKIE["SM8SUB"]);
-    $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `gAPI_accessToken`='$accessToken' WHERE `subject`='$this->_subjectID'");
+    $query = $this->_Mysqli->query("UPDATE `M8_Users` SET `gAPI_accessToken`='$accessToken', `gAPI_refreshToken`='$refreshToken' WHERE `subject`='$this->_subjectID'");
 
-	if(!$this->_Mysqli->affected_rows == 1){
-		//$this->_errorMessage = "[SM8]DB Error";
-		$this->setErrorMessage("{DB}" . $this->_Mysqli->error . " - " . $accessToken);
-		return false;
-	}
-
-	$this->initDriveClient();
+		if($this->_Mysqli->affected_rows != 1){
+			//$this->_errorMessage = "[SM8]DB Error";
+			$this->setErrorMessage("{DB}" . $this->_Mysqli->error . " - " . $accessToken);
+			return false;
+		}
+		$this->initDriveClient();
 
     if(!$this->setupGDrive())
       return false;

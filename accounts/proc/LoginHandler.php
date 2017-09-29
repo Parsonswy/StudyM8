@@ -82,7 +82,6 @@ class LoginHandler{
       $this->_GUserData = $gData;
       return true;
     }
-
 /************************************************************
 *
 * StudyM8 Database interaction
@@ -108,7 +107,7 @@ class LoginHandler{
     public function createAccount(){
       $name = $this->_Mysqli->real_escape_string($this->_GUserData->name);
       $email = $this->_Mysqli->real_escape_string($this->_GUserData->email);
-      $query = $this->_Mysqli->query("INSERT INTO `M8_Users` VALUES(NULL,'$this->_subject','$name','$email','','','','" . time() . "')");
+      $query = $this->_Mysqli->query("INSERT INTO `M8_Users` VALUES(NULL,'$this->_subject','$name','$email','','','','','" . time() . "')");
       if(!$this->_Mysqli->affected_rows){
         $this->_errorMessage = "A database error occured while attempting to create your account.";
         return false;
@@ -121,13 +120,24 @@ class LoginHandler{
     //Get data from servers
     //Set sessions / cookies
     public function loginToAccount(){
-      $query = $this->_Mysqli->query("SELECT `sm8ID`,`name`,`email`,`gAPI_accessToken`,`sm8GFolder`,`lastLogin` FROM `M8_Users` WHERE `subject`=$this->_subject");
+      $query = $this->_Mysqli->query("SELECT `sm8ID`,`name`,`email`,`gAPI_accessToken`,`sm8GFolder`,'gAPI_refreshToken',`lastLogin` FROM `M8_Users` WHERE `subject`=$this->_subject");
       if($query->num_rows != 1){
         $this->_errorMessage = "Error contacting logon server.";
         return false;
       }
 
       $rows = $query->fetch_assoc();
+
+      //Refresh Access Token if not first time login
+      if($rows["gAPI_refreshToken"]){
+          $newAccessGAPIToken = $this->refreshDriveAccessToken($rows["gAPI_refreshToken"]);
+          if($newAccessGAPIToken)
+            $rows["gAPI_Token"] = $newAccessGAPIToken;
+          else
+            return false; //Error Message Set in refreshDriveAccessToken()
+        }
+      }
+
       session_start();
       $_SESSION["SM8ID"] = $rows["sm8ID"];
       $_SESSION["SM8NAME"] = $rows["name"];
