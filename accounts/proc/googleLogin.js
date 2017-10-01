@@ -17,15 +17,31 @@ function signOut() {
 
 //OAuth Token sent to server to report login
 function reportSignonToServer(token){
+  var host = extractHostname(window.location);
   var xhttp = new XMLHttpRequest();
-  xhttp.open("POST","https://studym8.org/accounts/proc/doGoogleLogin.php",true);
+  xhttp.open("POST","https://" . host . "/accounts/proc/doGoogleLogin.php",true);
 
   xhttp.onreadystatechange = function() {
    if (this.readyState == 4 && this.status == 200) {
      console.log(JSON.parse(this.responseText));
+     window.location = "https://" . host . "/study/StudyM8.php";
    }
  };
- 
+
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("OID=" + token);
+}
+
+function extractHostname(url) {
+    var hostname;
+
+    //find & remove "protocol://"
+    if (url.indexOf("://") > -1)
+        hostname = url.split('/')[2];
+    else
+        hostname = url.split('/')[0];
+
+    //find & remove "?"
+    hostname = hostname.split('?')[0];
+    return hostname;
 }

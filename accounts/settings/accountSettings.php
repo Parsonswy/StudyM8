@@ -1,6 +1,7 @@
 <?php
+	require("/var/www/StudyM8/StudyM8_Globals.php");
+	require("/var/www/StudyM8/accounts/proc/checkLogin.php");
   //Cases corispond to primary functions in AccoutnSetup.php
-  //require("/var/www/html/accounts/proc/checkLogin.php");
 	session_start();//TODO:remove when login check is fixed
   if(!ISSET($_GET["cfg"]))
     $cfg = null;
@@ -17,7 +18,7 @@ switch($cfg){
     //$code is defined in oAuthCallback, which calls this script and triggers case
     if(!$AccountSetup->GDrive_API_Setup($code))
       exit("[SM8]" . $AccountSetup->getErrorMessage());
-
+		header("https://studym8.org/study/StudyM8.php");//Redirt after sucess
     exit("OK");
   break;default:
     //TODO: Display default account settings page

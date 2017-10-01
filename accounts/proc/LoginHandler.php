@@ -1,4 +1,7 @@
 <?php
+//require("/var/www/StudyM8/StudyM8_Globals.php"); -- Done in doGoogleLogin.php (Driver)
+require("/var/www/.html/mysqli.php");
+require("/var/www/StudyM8/latest/vendor/autoload.php");
 /*
   Receive AuthResponseToken from client, that it rececieved from Google
   Token is async encrypted with data
@@ -18,8 +21,6 @@ class LoginHandler{
       public function getErrorMessage(){return $this->_errorMessage;}
 
     public function __construct(){
-      //Get Google API Client, Create Instance, Load Creds
-      require("/var/www/studym8/latest/vendor/autoload.php");
       $this->_Google_Client = new Google_Client();
       $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
     }
@@ -56,7 +57,7 @@ class LoginHandler{
     //Verifies API token and token issuer
     private function validateGoogleToken(){
       //Requests API - Used for HTTP/S requests
-      require("/var/www/studym8/latest/vendor/rmccue/requests/library/Requests.php");
+      require("/var/www/StudyM8/latest/vendor/rmccue/requests/library/Requests.php");
       Requests::register_autoloader();
       $url = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=" . $this->_userGAPIToken;
       $request = Requests::get($url, array('Accept' => 'application/json'));
@@ -146,7 +147,7 @@ class LoginHandler{
       $_SESSION["sm8GFolder"] = $rows["sm8GFolder"];
       $_SESSION["sm8FATDB"] = $rows["sm8ID"] . "_SM8_FAT";
 
-      $SM8_Token = md5($rows["sm8ID"] . $rows["lastLogin"] . $_SERVER["HTTP_CF_CONNECTING_IP"]);
+      $SM8_Token = md5($rows["sm8ID"] . $rows["lastLogin"] . REMOTE_IP);
 
       //30 day expire, https, http header access only
       setcookie("SM8SUB",$this->_GUserData->sub,(time() + 60 * 60 * 24 * 30), "/", "studym8.org", true, true);
@@ -166,8 +167,8 @@ class LoginHandler{
     //wipe session
     private function sessionDestroy(){
       session_destroy();
-      setcookie("SM8SUB",null,time()-3600,"","studym8.org",true,true);
-      setcookie("SM8TK",null,time()-3600,"","studym8.org",true,true);
+      setcookie("SM8SUB",null,time()-3600,"",DOMAIN,true,true);
+      setcookie("SM8TK",null,time()-3600,"",DOMAIN,true,true);
       $this->_Mysqli->query("UPDATE `M8_Users` SET `sessionID`='' WHERE `subject`=$this->_subject");
     }
 
@@ -175,7 +176,6 @@ class LoginHandler{
     //Mysqli resource to access StudyM8 user data
     //
     private function initDataSQL(){
-      require("/var/www/.html/mysqli.php");
       if($this->_Mysqli = sqlConnect(1))
         return true;
 

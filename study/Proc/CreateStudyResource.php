@@ -1,4 +1,6 @@
 <?php
+//require("/var/www/StudyM8/StudyM8_Globals.php"); -- Done in resourceManager (Driver)
+//require("/var/www/.html/mysqli.php"); -- Done in checkLogin
 require("./FileAction.php");
 /*
 * Handles new resoruces being uploaded by client to system
@@ -31,7 +33,7 @@ require("./FileAction.php");
       }
 
 			public function processResource(){
-					echo "params";
+			 echo "params";
         if(!$this->insertToM8Database())
           return false;//erorr message set in insertToM8Database()
 				echo "M8 DB";

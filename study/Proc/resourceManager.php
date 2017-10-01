@@ -1,11 +1,11 @@
 <?php
+require("/var/www/StudyM8/StudyM8_Globals.php");
+require("/var/www/StudyM8/latest/accounts/proc/checkLogin.php");
+require("./CreateStudyResource.php");
 /*
 * Communication endpoint for document (resource) management by users
 * Driver class for resource management classes
 */
-
-//Verify user is logged in
-require("/var/www/studym8/latest/accounts/proc/checkLogin.php");
 
 //reportUploadError()
 $errData = array();
@@ -16,7 +16,6 @@ echo "</pre>";
 
 switch($_POST["action"]){
   case "create_upload":
-    require("./CreateStudyResource.php");
     //Loop through all uploaded files and pass reference to data array
     for($i = 0; $i < count($_FILES); $i++){
       if($_FILES["SM8_UploadItems_Form_FilePool_Upload_" . $i]["error"] == 0){

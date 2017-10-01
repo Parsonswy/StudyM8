@@ -1,4 +1,7 @@
 <?php
+//require("/var/www/StudyM8/accounts/proc/checkLogin.php"); -- Done in accountSettings (Driver)
+require("/var/ww/StudyM8/vendor/autoload.php");
+require("/var/www/.html/mysqli.php");
 class AccountSetup{
   private $_Google_Client;  //General / Account API Calls
   private $_Google_Drive_Client;  //Drive API Calls
@@ -22,7 +25,6 @@ class AccountSetup{
   //  SM8 Database link
   //
   private function initMysql($type){
-    require("/var/www/.html/mysqli.php");
     if($this->_Mysqli = sqlConnect($type))
       return true;
 
@@ -33,13 +35,12 @@ class AccountSetup{
   //  Google Accounts API Service Client
   //
   private function initGoogleClient(){
-    require("./../../exAPIS/GAPI/vendor/autoload.php");
     $this->_Google_Client = new Google_Client();
     $this->_Google_Client->setAuthConfig("/var/www/.html/client_secret_apps.googleusercontent.com.json");
     $this->_Google_Client->setIncludeGrantedScopes(true);
     $this->_Google_Client->setAccessType("offline");
     $this->_Google_Client->addScope(Google_Service_Drive::DRIVE_FILE);//Probably right
-	  $this->_Google_Client->setRedirectUri("https://studym8.org/accounts/settings/oAuthCallback.php");
+	  $this->_Google_Client->setRedirectUri("https://" . DOMAIN . "/accounts/settings/oAuthCallback.php");
   }
 
   private function setGoogleClientAPIToken($token){

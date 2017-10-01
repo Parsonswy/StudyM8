@@ -1,6 +1,5 @@
 <?php
-//Security Check
-require("/var/www/studym8/latest/accounts/proc/checkLogin.php")
+require("/var/www/StudyM8/latest/accounts/proc/checkLogin.php")
 ?>
 <!DOCTYPE html>
 <html>

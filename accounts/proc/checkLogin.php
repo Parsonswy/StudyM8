@@ -1,4 +1,6 @@
 <?php
+require("/var/www/StudyM8/StudyM8_Globals.php");
+require("/var/www/.html/mysqli.php");
 /*
 * Check if user is logged in or not
 * return accordingly
@@ -14,7 +16,6 @@ if(!isset($_COOKIE["SM8SUB"]))
 /**********************************
 	Validate SM8 Token
 ********************************/
-require("/var/www/.html/mysqli.php");
 if(!$Mysqli = sqlConnect(1))
   exit("Database Error! Unable verify user access");
 
@@ -26,11 +27,11 @@ if($Mysqli->num_rows != 1){
 }
 
 $rows = $query->fetch_assoc();
-$SM8_Token = md5($rows["sm8ID"] . $rows["lastLogin"] . $_SERVER["HTTP_CF_CONNECTING_IP"]);
+$SM8_Token = md5($rows["sm8ID"] . $rows["lastLogin"] . REMOTE_IP);
 
 if(!$_COOKIE["SM8TK"] === $SM8_Token){
-  setcookie("SM8SUB",0,(time()-3600), "/", "studym8.org", true, true);
-  setcookie("SM8TK",0,(time()-3600), "/", "studym8.org", true, true);
+  setcookie("SM8SUB",0,(time()-3600), "/", DOMAIN, true, true);
+  setcookie("SM8TK",0,(time()-3600), "/", DOMAIN, true, true);
   session_destroy();
   exit("No Login");
 }
